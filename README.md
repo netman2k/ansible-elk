@@ -2,7 +2,7 @@ ansible-elk
 ===========
 Ansible Playbook for setting up the ELK/EFK Stack and Filebeat client on remote hosts
 
-![ELK](/image/ansible-elk.png?raw=true)
+![ELK](image/ansible-elk.png?raw=true)
 
 ## What does it do?
    - Automated deployment of a full 6.5+ ELK or EFK stack (Elasticsearch, Logstash/Fluentd, Kibana)
@@ -26,6 +26,7 @@ Ansible Playbook for setting up the ELK/EFK Stack and Filebeat client on remote 
        * You can run this against Fedora clients prior to running Ansible ELK:
        - ```ansible fedora-client-01 -u root -m shell -i hosts -a "dnf install yum python2 libsemanage-python python2-dnf -y"```
    - You may want to modify ```vm.swappiness``` as ELK/EFK is demanding and swapping kills the responsiveness.
+     
      - I am leaving this up to your judgement.
 ```
 echo "vm.swappiness=10" >> /etc/sysctl.conf
@@ -74,17 +75,17 @@ ansible-playbook -i hosts install/elk.yml
 ### Create your Kibana Index Pattern
    - Next you'll login to your Kibana instance and create a Kibana index pattern.
 
-![ELK](/image/elk6-0.png?raw=true "Click Explore on my Own")
+![ELK](image/elk6-0.png?raw=true"Click Explore on my Own")
 
    - Note: Sample data can be useful, you can try it later however.
 
-![ELK](/image/elk6-1.png?raw=true "Click Discover")
+![ELK](image/elk6-1.png?raw=true"Click Discover")
 
-![ELK](/image/elk6-2.png?raw=true "Create index pattern")
+![ELK](image/elk6-2.png?raw=true"Create index pattern")
 
-![ELK](/image/elk6-3.png?raw=true "Select @timestamp from the drop-down and create index pattern")
+![ELK](image/elk6-3.png?raw=true"Select @timestamp from the drop-down and create index pattern")
 
-![ELK](/image/elk6-4.png?raw=true "Click Discover")
+![ELK](image/elk6-4.png?raw=true"Click Discover")
 
    - At this point you can setup your client(s) to start sending data via Filebeat/SSL
 
@@ -95,7 +96,7 @@ ansible-playbook -i hosts install/elk-client.yml --extra-vars 'elk_server=X.X.X.
 ```
    - Once this completes return to your ELK and you'll see log results come in from ELK/EFK clients via filebeat
 
-![ELK](/image/elk6-5.png?raw=true "watch the magic")
+![ELK](image/elk6-5.png?raw=true"watch the magic")
 
 ## 5.6 ELK/EFK (Deprecated)
    - The 5.6 series of ELK/EFK is also available, to use this just use the 5.6 branch
