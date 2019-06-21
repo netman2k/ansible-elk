@@ -8,7 +8,7 @@
     name: libsemanage-python
   become: true
 
-- name: Copy elasticsearch yum repo file
+- name: Copy open distro elasticsearch yum repo file
   copy:
     src=elasticsearch.repo
     dest=/etc/yum.repos.d/elasticsearch.repo
@@ -17,9 +17,9 @@
     mode=0644
   become: true
 
-- name: Install elasticsearch and openjdk
+- name: Install open distro elasticsearch and openjdk
   yum:
-    name: [elasticsearch, java-openjdk-headless]
+    name: [opendistroforelasticsearch, java-openjdk-headless]
   become: true
 
 - name: Copy templated elasticsearch.yml
@@ -31,6 +31,16 @@
     mode=0660
   become: true
   ignore_errors: true
+
+- name: Set Limit memlock infinity for elasticsearch
+  copy:
+    src=override.conf
+    dest=/etc/systemd/system/elasticsearch.service.d/override.conf
+    owner=root
+    group=root
+    mode=0644
+  when: ansible_service_mgr == 'systemd'
+  become: true
 
 - name: Check if system memory is greater than 64G
   debug: msg="System memory is {{ansible_memory_mb.real.total | int}} so setting heapsize to 32G upper limit"
@@ -96,20 +106,20 @@
 # this seems like a packaging bug for 6.x
 - name: Create log directory structure for ES
   file:
-    path: /usr/share/elasticsearch/logs
+    path: /var/log/elasticsearch
     state: directory
     owner: elasticsearch
     group: elasticsearch
-    mode: 0755
+    mode: 2750
 
 # another packaging bug, this should be done by RPM
 - name: Create datadir for elasticsearch
   file:
-    path: /usr/share/elasticsearch/data
+    path: /var/lib/elasticsearch
     state: directory
     owner: elasticsearch
     group: elasticsearch
-    mode: 0755
+    mode: 2750
 
 - name: Start or restart elasticsearch service
   command: systemctl restart elasticsearch.service

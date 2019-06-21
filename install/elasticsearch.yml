@@ -1,0 +1,20 @@
+---
+#
+# Playbook to install the ELK or EFK stack
+#
+# versions:
+#  - 2.4 (git branch 2.4)
+#  - 5.6 (git branch 5.6)
+#  - 6.5 (git branch master)
+#
+
+- hosts: elasticsearch
+  remote_user: "{{ ansible_system_user }}"
+  vars_files:
+    - group_vars/all.yml
+  roles:
+    - { role: elasticsearch }
+    - { role: nginx }
+    - { role: curator, when: install_curator_tool }
+    - { role: firewall, when: manage_firewall }
+    - { role: instructions }
